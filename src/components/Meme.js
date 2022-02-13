@@ -1,10 +1,9 @@
 import React from "react";
 import memesData from "./memesData.js";
 
-const getMemeImage = () => {
-  const { url } = memesData.data.memes[Math.floor(10 * Math.random())];
-  return console.log(url);
-};
+const getMemeImage = () =>
+  memesData.data.memes[Math.floor(memesData.data.memes.length * Math.random())]
+    .url;
 
 export const Meme = () => {
   return (
