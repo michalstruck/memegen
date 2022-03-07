@@ -1,5 +1,5 @@
-import { Header } from "./components/Header";
-import { Meme } from "./components/Meme";
+import { Header } from "./Header";
+import { Meme } from "./Meme";
 
 export const App = () => {
   return (
