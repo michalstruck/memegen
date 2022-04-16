@@ -1,12 +1,11 @@
-import React from "react";
 import logo from "./images/logo.jpg";
 
 export const Header = () => {
   return (
-    <header className="header">
-      <img src={logo} className="header--image" alt="trollface" />
-      <h2 className="header--title">Meme Generator</h2>
-      <h4 className="header--project">React Course - Project 3</h4>
+    <header className="flex items-center h-16 text-white p-5 bg-fuchsia-800">
+      <img src={logo} className="h-full" alt="trollface" />
+      <h2 className="text-2xl mr-auto">Meme Generator</h2>
+      <h4 className="text-xl">React Course - Project 3</h4>
     </header>
   );
 };
