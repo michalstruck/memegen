@@ -48,19 +48,21 @@ export const Meme = () => {
           name="topText"
           type="text"
           placeholder="Top text"
-          className="m-2 py-1 rounded-md focus:border-0"
+          className="m-2 py-1 rounded-md focus:ring-0 focus:border-gray-500"
         />
         <input
           onChange={handleChange}
           name="bottomText"
           type="text"
           placeholder="Bottom text"
-          className="m-2 py-1 rounded-md focus:border-0"
+          className="m-2 py-1 rounded-md focus:ring-0 focus:border-gray-500"
         />
       </form>
       <button
-        className="order-2 rounded-md bg-fuchsia-700 cursor-pointer p-2 "
-        onClick={getMemeImage}
+        className="order-2 rounded-md drop-shadow-2xl active:mt-2 bg-fuchsia-800 hover:bg-fuchsia-700 cursor-pointer p-2 text-white"
+        onClick={() => {
+          getMemeImage();
+        }}
       >
         Get a new meme image
       </button>
