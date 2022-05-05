@@ -1,47 +1,43 @@
 import { useState, useEffect, useCallback, ChangeEvent } from "react";
+import { APIResTypes, MemeTypes } from "../common/Types";
 
 export const Meme = () => {
-  const [allMemes, setAllMemes] = useState([]);
+  const [allMemes, setAllMemes] = useState<MemeTypes[]>([]);
 
   const [meme, setMeme] = useState({
     topText: "",
     bottomText: "",
     randomImage: "http://i.imgflip.com/1bij.jpg",
   });
+  const [text, setText] = useState<string[]>([]);
+
   const fetchMemes = useCallback(async () => {
     const res = await fetch("https://api.imgflip.com/get_memes");
-    const json = await res.json();
+    const json: APIResTypes = await res.json();
     setAllMemes(json.data.memes);
-    console.log(json);
   }, []);
 
   useEffect(() => void fetchMemes(), [fetchMemes]);
 
-  // useEffect(() => {
-  //   fetch("https://api.imgflip.com/get_memes")
-  //     .then((res) => res.json())
-  //     .then((data) => setAllMemes(data.data.memes));
-  // }, [allMemes]);
-
-  function getMemeImage() {
-    const randomNumber = Math.floor(Math.random() * allMemes.length + 1);
+  const getMemeImage = () => {
+    const randomNumber = Math.floor(Math.random() * allMemes?.length);
     const { url } = allMemes[randomNumber];
     setMeme((prevMeme) => ({
       ...prevMeme,
       randomImage: url,
     }));
-  }
+  };
 
-  function handleChange(event: ChangeEvent<HTMLInputElement>) {
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     return setMeme((prevMeme) => ({
       ...prevMeme,
       [name]: value,
     }));
-  }
+  };
 
   return (
-    <main className="grid gap-4 grid-cols-1 grid-rows-2 place-items-center">
+    <div className="grid gap-4 grid-cols-1 grid-rows-2 place-items-center">
       <form className="order-1 pt-6">
         <input
           onChange={handleChange}
@@ -59,7 +55,7 @@ export const Meme = () => {
         />
       </form>
       <button
-        className="order-2 rounded-md drop-shadow-2xl active:mt-2 bg-fuchsia-800 hover:bg-fuchsia-700 cursor-pointer p-2 text-white"
+        className="order-2 rounded-md drop-shadow-2xl active:mt-2 bg-fuchsia-700 hover:bg-fuchsia-800 cursor-pointer p-2 text-white"
         onClick={() => {
           getMemeImage();
         }}
@@ -67,7 +63,10 @@ export const Meme = () => {
         Get a new meme image
       </button>
 
-      <div className="order-2 relative flex items-center justify-center">
+      <div
+        id="generatedMeme"
+        className="order-2 relative flex items-center justify-center"
+      >
         <h2 className="absolute top-3 text-white text-outline text-3xl font-meme uppercase">
           {meme.topText}
         </h2>
@@ -76,7 +75,7 @@ export const Meme = () => {
           {meme.bottomText}
         </h2>
       </div>
-    </main>
+    </div>
   );
 };
 
