@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, ChangeEvent } from "react";
 import { APIResTypes, MemeTypes } from "../common/Types";
+import { toJpeg } from "html-to-image";
 
 export const Meme = () => {
   const [allMemes, setAllMemes] = useState<MemeTypes[]>([]);
@@ -35,37 +36,53 @@ export const Meme = () => {
       [name]: value,
     }));
   };
-
+  const downloadMeme = () => {
+    toJpeg(document.getElementById("generatedMeme")!, { quality: 1 }).then(
+      (dataUrl) => {
+        const link = document.createElement("a");
+        link.download = `my_meme`;
+        link.href = dataUrl;
+        link.click();
+      }
+    );
+  };
   return (
     <div className="grid gap-4 grid-cols-1 grid-rows-2 place-items-center">
-      <form className="order-1 pt-6">
+      <form className="order-1 mt-8 mb-1">
         <input
           onChange={handleChange}
           name="topText"
           type="text"
           placeholder="Top text"
-          className="m-2 py-1 rounded-md focus:ring-0 focus:border-gray-500"
+          className="mx-8 mb-0 py-1 rounded-md focus:ring-0 focus:border-gray-500"
         />
         <input
           onChange={handleChange}
           name="bottomText"
           type="text"
           placeholder="Bottom text"
-          className="m-2 py-1 rounded-md focus:ring-0 focus:border-gray-500"
+          className="mx-8 mb-0 py-1 rounded-md focus:ring-0 focus:border-gray-500"
         />
       </form>
-      <button
-        className="order-2 rounded-md drop-shadow-2xl active:mt-2 bg-fuchsia-700 hover:bg-fuchsia-800 cursor-pointer p-2 text-white"
-        onClick={() => {
-          getMemeImage();
-        }}
-      >
-        Get a new meme image
-      </button>
+      <div className="order-2 grid grid-cols-5 place-items-center">
+        <button
+          className="col-span-2 w-full rounded-md drop-shadow-2xl active:mt-2 bg-fuchsia-700 hover:bg-fuchsia-800 cursor-pointer p-2 text-white"
+          onClick={downloadMeme}
+        >
+          Download meme
+        </button>
+        <div></div>
+        <button
+          className="col-span-2 w-full rounded-md drop-shadow-2xl active:mt-2 bg-fuchsia-700 hover:bg-fuchsia-800 cursor-pointer p-2 text-white"
+          onClick={getMemeImage}
+        >
+          Get a new meme image
+        </button>
+      </div>
 
       <div
         id="generatedMeme"
-        className="order-2 relative flex items-center justify-center"
+        className="order-3 mt-1 relative flex items-center justify-center"
       >
         <h2 className="absolute top-3 text-white text-outline text-3xl font-meme uppercase">
           {meme.topText}
