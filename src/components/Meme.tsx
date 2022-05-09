@@ -42,6 +42,12 @@ export const Meme = () => {
     setInputFields(() => [...inputFields, ""]);
   };
 
+  const removeInput = () => {
+    setInputFields(() =>
+      inputFields.filter((elem, i) => i != inputFields.length - 1)
+    );
+  };
+
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setInputFields(
@@ -88,7 +94,11 @@ export const Meme = () => {
         >
           + text area
         </button>
-        <button className="ml-1 w-full rounded-md drop-shadow-2xl active:mt-2 bg-fuchsia-700 hover:bg-fuchsia-800 cursor-pointer p-2 text-white">
+        <button
+          className="ml-1 w-full rounded-md drop-shadow-2xl active:mt-2 bg-fuchsia-700 hover:bg-fuchsia-800 cursor-pointer p-2 text-white"
+          onClick={removeInput}
+          disabled={inputFields.length === 1}
+        >
           - text area
         </button>
       </div>
