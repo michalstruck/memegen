@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, ChangeEvent } from "react";
-import { APIResTypes, MemeTypes } from "../common/Types";
+import useMemes from "../common/useMemes";
 import { toJpeg } from "html-to-image";
-import MemeImg from "./MemeImg";
+import GeneratedMeme from "./GeneratedMeme";
 
 const downloadMeme = () => {
   toJpeg(document.getElementById("generatedMeme")!, { quality: 1 }).then(
@@ -14,29 +14,9 @@ const downloadMeme = () => {
   );
 };
 
-export const Meme = () => {
-  const [allMemes, setAllMemes] = useState<MemeTypes[]>([]);
-  const fetchMemes = useCallback(async () => {
-    const res = await fetch("https://api.imgflip.com/get_memes");
-    const json: APIResTypes = await res.json();
-    setAllMemes(json.data.memes);
-  }, []);
-  useEffect(() => void fetchMemes(), [fetchMemes]);
-
-  const [meme, setMeme] = useState({
-    randomImage: "http://i.imgflip.com/1bij.jpg",
-  });
-
+export const Main = () => {
+  const { currentMeme, getMemeImage } = useMemes();
   const [inputFields, setInputFields] = useState<string[]>(["", ""]);
-
-  const getMemeImage = () => {
-    const randomNumber = Math.floor(Math.random() * allMemes?.length);
-    const { url } = allMemes[randomNumber];
-    setMeme((prevMeme) => ({
-      ...prevMeme,
-      randomImage: url,
-    }));
-  };
 
   const addInput = () => {
     setInputFields(() => [...inputFields, ""]);
@@ -44,7 +24,7 @@ export const Meme = () => {
 
   const removeInput = () => {
     setInputFields(() =>
-      inputFields.filter((elem, i) => i != inputFields.length - 1)
+      inputFields.filter((elem, i) => i !== inputFields.length - 1)
     );
   };
 
@@ -84,7 +64,7 @@ export const Meme = () => {
           className="col-span-2 w-full rounded-md drop-shadow-2xl active:mt-2 bg-fuchsia-700 hover:bg-fuchsia-800 cursor-pointer p-2 text-white"
           onClick={getMemeImage}
         >
-          Get a new meme image
+          Get a new meme
         </button>
         <div />
 
@@ -102,8 +82,7 @@ export const Meme = () => {
           - text area
         </button>
       </div>
-
-      <MemeImg textArr={inputFields} randomImg={meme.randomImage} />
+      <GeneratedMeme textArr={inputFields} randomImg={currentMeme} />
     </div>
   );
 };
