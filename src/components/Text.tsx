@@ -1,13 +1,26 @@
+import { useDrag } from "react-dnd";
+import ItemTypes from "../common/DnDConstants";
+
 interface props {
   text: string;
-  i: number;
+  id: number;
+  left: number;
+  top: number;
 }
 
-const Text = ({ text, i }: props) => {
+const Text = ({ text, id, left, top }: props) => {
+  const [{ isDragging }, drag] = useDrag({
+    type: ItemTypes.MEME_TEXT,
+    item: { id, left, top },
+    collect: (monitor) => ({
+      isDragging: !!monitor.isDragging(),
+    }),
+  });
+
   return (
     <h2
-      key={i}
-      style={{ top: i === 0 ? 10 : (i + 0.5) * 20 }}
+      ref={drag}
+      style={{ top, left }}
       className="absolute text-white text-outline text-3xl font-meme uppercase"
     >
       {text}

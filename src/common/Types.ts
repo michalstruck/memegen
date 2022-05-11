@@ -10,3 +10,10 @@ export interface APIResTypes {
   data: { memes: MemeTypes[] };
   success: boolean;
 }
+
+export interface DragItem {
+  type: string;
+  id: string;
+  top: number;
+  left: number;
+}

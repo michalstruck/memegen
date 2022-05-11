@@ -1,7 +1,16 @@
-import { useState, useEffect, useCallback, ChangeEvent } from "react";
+import { useState, ChangeEvent, useCallback } from "react";
 import useMemes from "../common/useMemes";
 import { toJpeg } from "html-to-image";
-import GeneratedMeme from "./GeneratedMeme";
+import { useDrop, XYCoord } from "react-dnd";
+import ItemTypes from "../common/DnDConstants";
+import Text from "./Text";
+import { DragItem } from "../common/Types";
+
+interface InputText {
+  text: string;
+  top: number;
+  left: number;
+}
 
 const downloadMeme = () => {
   toJpeg(document.getElementById("generatedMeme")!, { quality: 1 }).then(
@@ -16,32 +25,73 @@ const downloadMeme = () => {
 
 export const Main = () => {
   const { currentMeme, getMemeImage } = useMemes();
-  const [inputFields, setInputFields] = useState<string[]>(["", ""]);
+  const [inputText, setInputText] = useState<InputText[]>([
+    { text: "", top: 30, left: 30 },
+    { text: "", top: 45, left: 45 },
+  ]);
 
   const addInput = () => {
-    setInputFields(() => [...inputFields, ""]);
+    setInputText(() => [
+      ...inputText,
+      {
+        text: "",
+        top: (inputText.length + 2) * 15,
+        left: (inputText.length + 2) * 15,
+      },
+    ]);
   };
 
   const removeInput = () => {
-    setInputFields(() =>
-      inputFields.filter((elem, i) => i !== inputFields.length - 1)
+    setInputText(() =>
+      inputText.filter((elem, i) => i !== inputText.length - 1)
     );
   };
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
-    setInputFields(
-      inputFields.map((text, i) => (i === +name ? (text = value) : text))
+    setInputText(
+      inputText.map((textObj, i) =>
+        i === +name ? { ...textObj, text: value } : textObj
+      )
     );
   };
 
+  //
+  //Drag'n'Drop functionality
+  //
+
+  const moveText = useCallback(
+    (id: string, left: number, top: number) => {
+      setInputText(
+        inputText.map((textObj, i) =>
+          i === +id ? { ...textObj, top, left } : textObj
+        )
+      );
+    },
+    [inputText, setInputText]
+  );
+
+  const [, drop] = useDrop(() => ({
+    accept: ItemTypes.MEME_TEXT,
+    drop: (item: DragItem, monitor) => {
+      console.log(item);
+      const movementOf = monitor.getDifferenceFromInitialOffset() as XYCoord;
+      const left = Math.round(item.left + movementOf.x);
+      const top = Math.round(item.top + movementOf.y);
+      moveText(item.id, left, top);
+    },
+    collect: (monitor) => ({ isOver: !!monitor.isOver() }),
+  }));
+
+  //
+
   return (
     <div
-      // style={{ gridTemplateRows: inputFields.length > 2 ? 3 : 2 }}
+      // style={{ gridTemplateRows: inputText.length > 2 ? 3 : 2 }}
       className="grid grid-cols-1 grid-rows-2 place-items-center"
     >
       <form className="mt-12 grid grid-cols-3">
-        {inputFields.map((v, i) => (
+        {inputText.map((v, i) => (
           <input
             key={i}
             onChange={handleChange}
@@ -77,12 +127,32 @@ export const Main = () => {
         <button
           className="ml-1 w-full rounded-md drop-shadow-2xl active:mt-2 bg-fuchsia-700 hover:bg-fuchsia-800 cursor-pointer p-2 text-white"
           onClick={removeInput}
-          disabled={inputFields.length === 1}
+          disabled={inputText.length === 1}
         >
           - text area
         </button>
       </div>
-      <GeneratedMeme textArr={inputFields} randomImg={currentMeme} />
+      <div
+        id="generatedMeme"
+        className="relative flex items-center justify-center"
+      >
+        {inputText.map((textObj, i) => (
+          <Text
+            key={i}
+            id={i}
+            text={textObj.text}
+            left={textObj.left}
+            top={textObj.top}
+          />
+        ))}
+
+        <img
+          ref={drop}
+          alt="meme-img"
+          src={currentMeme}
+          className="rounded-sm max-w-2xl min-w-"
+        />
+      </div>
     </div>
   );
 };
