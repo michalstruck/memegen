@@ -5,6 +5,7 @@ import { useDrop, XYCoord } from "react-dnd";
 import ItemTypes from "../common/DnDConstants";
 import Text from "./Text";
 import { DragItem } from "../common/Types";
+import update from "immutability-helper";
 
 interface InputText {
   text: string;
@@ -50,39 +51,62 @@ export const Main = () => {
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setInputText(
-      inputText.map((textObj, i) =>
-        i === +name ? { ...textObj, text: value } : textObj
-      )
+      inputText.map((textObj, i) => {
+        console.log();
+        return i === +name ? { ...textObj, text: value } : textObj;
+      })
     );
   };
 
   //
   //Drag'n'Drop functionality
   //
+  console.log("main code", inputText);
 
-  const moveText = useCallback(
-    (id: string, left: number, top: number) => {
-      setInputText(
-        inputText.map((textObj, i) =>
-          i === +id ? { ...textObj, top, left } : textObj
-        )
-      );
-    },
-    [inputText, setInputText]
-  );
+  const moveText = (id: string, left: number, top: number, text: string) => {
+    console.log("moveText func before set", inputText);
+    // const updater = () => {
+    //   update(inputText, "[+id].top", () => top);
+    //   update(inputText, "[+id].left", () => left);
+    // };
+    setInputText(
+      update(inputText, {
+        [id]: {
+          $merge: { text, left, top },
+        },
+      })
+    );
+
+    // setInputText(
+    //   inputText.map((textObj, i) =>
+    //     i === +id ? { text: children, top, left } : { ...textObj }
+    //   )
+    // );
+    console.log("moveText func after set", inputText);
+  };
+
+  // const updateInputsAfterDrop = (id: string, children: string) => {
+  //   console.log(children);
+  //   setInputText(
+  //     inputText.map((textObj, i) =>
+  //       i === +id ? { ...textObj, text: children } : textObj
+  //     )
+  //   );
+  // };
 
   const [, drop] = useDrop(() => ({
     accept: ItemTypes.MEME_TEXT,
     drop: (item: DragItem, monitor) => {
-      console.log(item);
       const movementOf = monitor.getDifferenceFromInitialOffset() as XYCoord;
       const left = Math.round(item.left + movementOf.x);
       const top = Math.round(item.top + movementOf.y);
-      moveText(item.id, left, top);
+      const { children } = item;
+      moveText(item.id, left, top, children);
+      // updateInputsAfterDrop(item.id, children);
+      return undefined;
     },
     collect: (monitor) => ({ isOver: !!monitor.isOver() }),
   }));
-
   //
 
   return (
@@ -125,7 +149,7 @@ export const Main = () => {
           + text area
         </button>
         <button
-          className="ml-1 w-full rounded-md drop-shadow-2xl active:mt-2 bg-fuchsia-700 hover:bg-fuchsia-800 cursor-pointer p-2 text-white"
+          className="ml-1 w-full rounded-md drop-shadow-2xl active:mt-2 disabled:mt-0 disabled:opacity-80 disabled: bg-fuchsia-700 hover:bg-fuchsia-800 cursor-pointer p-2 text-white"
           onClick={removeInput}
           disabled={inputText.length === 1}
         >
@@ -137,15 +161,10 @@ export const Main = () => {
         className="relative flex items-center justify-center"
       >
         {inputText.map((textObj, i) => (
-          <Text
-            key={i}
-            id={i}
-            text={textObj.text}
-            left={textObj.left}
-            top={textObj.top}
-          />
+          <Text key={i} id={i} left={textObj.left} top={textObj.top}>
+            {textObj.text}
+          </Text>
         ))}
-
         <img
           ref={drop}
           alt="meme-img"
