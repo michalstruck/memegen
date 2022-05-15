@@ -9,10 +9,13 @@ interface props {
 }
 
 const Text = ({ children, id, left, top }: props) => {
-  const [, drag] = useDrag({
-    type: ItemTypes.MEME_TEXT,
-    item: { id, left, top, children },
-  });
+  const [, drag] = useDrag(
+    {
+      type: ItemTypes.MEME_TEXT,
+      item: { id, left, top, children },
+    },
+    [children, left, top]
+  );
 
   return (
     <div

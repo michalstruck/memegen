@@ -61,52 +61,27 @@ export const Main = () => {
   //
   //Drag'n'Drop functionality
   //
-  console.log("main code", inputText);
-
   const moveText = (id: string, left: number, top: number, text: string) => {
-    console.log("moveText func before set", inputText);
-    // const updater = () => {
-    //   update(inputText, "[+id].top", () => top);
-    //   update(inputText, "[+id].left", () => left);
-    // };
     setInputText(
-      update(inputText, {
-        [id]: {
-          $merge: { text, left, top },
-        },
-      })
+      inputText.map((textObj, i) => (+id === i ? { text, top, left } : textObj))
     );
-
-    // setInputText(
-    //   inputText.map((textObj, i) =>
-    //     i === +id ? { text: children, top, left } : { ...textObj }
-    //   )
-    // );
-    console.log("moveText func after set", inputText);
   };
 
-  // const updateInputsAfterDrop = (id: string, children: string) => {
-  //   console.log(children);
-  //   setInputText(
-  //     inputText.map((textObj, i) =>
-  //       i === +id ? { ...textObj, text: children } : textObj
-  //     )
-  //   );
-  // };
-
-  const [, drop] = useDrop(() => ({
-    accept: ItemTypes.MEME_TEXT,
-    drop: (item: DragItem, monitor) => {
-      const movementOf = monitor.getDifferenceFromInitialOffset() as XYCoord;
-      const left = Math.round(item.left + movementOf.x);
-      const top = Math.round(item.top + movementOf.y);
-      const { children } = item;
-      moveText(item.id, left, top, children);
-      // updateInputsAfterDrop(item.id, children);
-      return undefined;
-    },
-    collect: (monitor) => ({ isOver: !!monitor.isOver() }),
-  }));
+  const [, drop] = useDrop(
+    () => ({
+      accept: ItemTypes.MEME_TEXT,
+      drop: (item: DragItem, monitor) => {
+        const movementOf = monitor.getDifferenceFromInitialOffset() as XYCoord;
+        const left = Math.round(item.left + movementOf.x);
+        const top = Math.round(item.top + movementOf.y);
+        const { children } = item;
+        moveText(item.id, left, top, children);
+        return undefined;
+      },
+      collect: (monitor) => ({ isOver: !!monitor.isOver() }),
+    }),
+    [inputText]
+  );
   //
 
   return (
