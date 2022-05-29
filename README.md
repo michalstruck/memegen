@@ -30,6 +30,7 @@ Memegen is a meme generator project I started early, when following a React cour
 - [React.js](https://reactjs.org/)
 - [html-to-image](https://github.com/bubkoo/html-to-image)
 - [React DnD](https://react-dnd.github.io/react-dnd/about)
+- [TailwindCSS](https://tailwindcss.com/)
 
 in [TypeScript](https://www.typescriptlang.org/)
 
