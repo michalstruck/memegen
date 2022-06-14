@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/adopt-a-pet/static/css/main.f1145df9.css",
+    "main.js": "/adopt-a-pet/static/js/main.b29b2bf6.js",
+    "index.html": "/adopt-a-pet/index.html",
+    "main.f1145df9.css.map": "/adopt-a-pet/static/css/main.f1145df9.css.map",
+    "main.b29b2bf6.js.map": "/adopt-a-pet/static/js/main.b29b2bf6.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.f1145df9.css",
+    "static/js/main.b29b2bf6.js"
+  ]
+}
