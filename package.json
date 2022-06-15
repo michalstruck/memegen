@@ -2,7 +2,7 @@
   "name": "memegen",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://michalstruck.github.io/adopt-a-pet",
+  "homepage": "https://michalstruck.github.io/memegen/",
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.2",
     "@testing-library/react": "^12.1.2",
