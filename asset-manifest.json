@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/memegen/static/css/main.f1145df9.css",
+    "main.css": "/memegen/static/css/main.3a78e78e.css",
     "main.js": "/memegen/static/js/main.b29b2bf6.js",
     "index.html": "/memegen/index.html",
-    "main.f1145df9.css.map": "/memegen/static/css/main.f1145df9.css.map",
+    "main.3a78e78e.css.map": "/memegen/static/css/main.3a78e78e.css.map",
     "main.b29b2bf6.js.map": "/memegen/static/js/main.b29b2bf6.js.map"
   },
   "entrypoints": [
-    "static/css/main.f1145df9.css",
+    "static/css/main.3a78e78e.css",
     "static/js/main.b29b2bf6.js"
   ]
 }
