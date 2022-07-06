@@ -123,14 +123,14 @@ const Main = () => {
       </form>
       <div className="grid grid-cols-8 place-items-center">
         <button
-          className="col-span-2 w-full rounded-md drop-shadow-lg active:mt-2 bg-fuchsia-700 hover:bg-fuchsia-800 cursor-pointer p-2 text-white hover:drop-shadow-2xl"
+          className="col-span-2 transition-all duration-75 w-full rounded-md drop-shadow-lg active:mt-2 bg-fuchsia-700 hover:bg-fuchsia-800 cursor-pointer p-2 text-white hover:drop-shadow-2xl"
           onClick={downloadMeme}
         >
           Download meme
         </button>
         <div />
         <button
-          className="col-span-2 w-full rounded-md drop-shadow-lg active:mt-2 bg-fuchsia-700 hover:bg-fuchsia-800 cursor-pointer p-2 text-white hover:drop-shadow-2xl"
+          className="col-span-2 transition-all duration-75 w-full rounded-md drop-shadow-lg active:mt-2 bg-fuchsia-700 hover:bg-fuchsia-800 cursor-pointer p-2 text-white hover:drop-shadow-2xl"
           onClick={getMemeImage}
         >
           Get a new meme
@@ -138,13 +138,13 @@ const Main = () => {
         <div />
 
         <button
-          className="mr-1 w-full rounded-md drop-shadow-lg active:mt-2 bg-fuchsia-700 hover:bg-fuchsia-800 cursor-pointer p-2 text-white hover:drop-shadow-2xl"
+          className="mr-1 transition-all duration-75 w-full rounded-md drop-shadow-lg active:mt-2 bg-fuchsia-700 hover:bg-fuchsia-800 cursor-pointer p-2 text-white hover:drop-shadow-2xl"
           onClick={addInput}
         >
           + text area
         </button>
         <button
-          className="ml-1 w-full rounded-md drop-shadow-lg active:mt-2 bg-fuchsia-700 hover:bg-fuchsia-800 cursor-pointer p-2 text-white 
+          className="ml-1 transition-all duration-75 w-full rounded-md drop-shadow-lg active:mt-2 bg-fuchsia-700 hover:bg-fuchsia-800 cursor-pointer p-2 text-white 
           disabled:mt-0 disabled:opacity-80 hover:drop-shadow-2xl hover:disabled:drop-shadow-lg hover:disabled:bg-fuchsia-700"
           onClick={removeInput}
           disabled={inputText.length === 1}
@@ -165,7 +165,7 @@ const Main = () => {
           ref={drop}
           alt="meme-img"
           src={currentMeme}
-          className="rounded-sm max-w-2xl min-w-"
+          className="rounded-sm max-w-2xl min-w- "
         />
       </div>
     </div>

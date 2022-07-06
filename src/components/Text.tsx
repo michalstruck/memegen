@@ -20,7 +20,7 @@ const Text = ({ children, id, left, top }: props) => {
   return (
     <div
       ref={drag}
-      className="absolute text-white text-outline text-3xl font-meme uppercase"
+      className="absolute cursor-pointer text-white text-outline text-3xl font-meme uppercase"
       style={{ top, left }}
     >
       {children}

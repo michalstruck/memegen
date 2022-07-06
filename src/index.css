@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import url("https://fonts.googleapis.com/css2?family=Karla&display=swap");
 
 * {
   font-family: Karla;
@@ -12,6 +13,7 @@
       2px 2px 5px #000;
   }
   .font-meme {
-    font-family: impact;
+    font-family: Karla;
+    weight: 900;
   }
 }
